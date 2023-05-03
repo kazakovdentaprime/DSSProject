@@ -1,0 +1,35 @@
+﻿@inject IHttpContextAccessor Accessor
+@model PostIndexVM
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = Accessor!.HttpContext!.Session.GetString("UserId");
+}
+
+<h1>Index</h1>
+
+@if (!string.IsNullOrEmpty(userId))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+<div class="d-flex flex-wrap gap-2">
+@foreach (var item in Model.Posts) {
+    <div class="card bg-light mb-3" style="max-width: 18rem;">
+        <div class="card-header">
+            <a asp-action="Details" asp-route-id="@item.Id.ToString()">@item.Title</a>
+                @if (Guid.TryParse(userId, out var uid) && uid == item.UserId)
+            {
+                <a asp-action="Edit" asp-route-id="@item.Id.ToString()">Update</a>
+                <a asp-action="Delete" asp-route-id="@item.Id.ToString()">Delete</a>
+            }
+        </div>
+      <div class="card-body">
+        <p class="card-text">@item.Body</p>
+      </div>
+    </div>
+}
+</div>
