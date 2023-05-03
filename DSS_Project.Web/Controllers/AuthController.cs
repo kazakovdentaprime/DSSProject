@@ -70,7 +70,7 @@ public class AuthController : BaseController
             return RedirectToAction("Index", "Posts");
         }
 
-        return View("Login");
+        return RedirectToAction("Login");
     }
 
     [HttpPost]
